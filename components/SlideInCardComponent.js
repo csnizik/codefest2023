@@ -22,7 +22,7 @@ const SlideInCardComponent = ({ position, direction, children }) => {
   const cardPosition = {
     top: position === 'top' ? 0 : 'auto',
     bottom: position === 'bottom' ? 0 : 'auto',
-    middle: position === 'middle' ? height / 3 : 'auto',
+    middle: position === 'middle' ? height / 2 : 'auto',
   }
 
   return (

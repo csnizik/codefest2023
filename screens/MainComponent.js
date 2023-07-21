@@ -1,7 +1,7 @@
 // MainComponent.js
 import React, { useState, useEffect } from 'react'
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, View, Text, Button } from 'react-native'
+import { StatusBar, Animated } from 'expo-status-bar'
+import { StyleSheet, View, Text, Button, ToastAndroid } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import LocationComponent from '../components/LocationComponent'
 import SlideInCardComponent from '../components/SlideInCardComponent'
@@ -15,33 +15,71 @@ export default function MainComponent() {
 
   const questions = [
     {
-      text: 'Question 1',
-      choices: ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'],
-      answer: 'Choice 1',
+      text: 'What is the answer to life, the universe, and everything?',
+      choices: ['24', '99', '42', '39'],
+      answer: '42',
     },
     {
-      text: 'Question 2',
-      choices: ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'],
-      answer: 'Choice 2',
+      text: "Why don't ants ever get sick?",
+      choices: [
+        'They have tiny ant doctors',
+        'They live in sterile environments',
+        'They have exoskeletons',
+        'Antibodies',
+      ],
+      answer: 'Antibodies',
     },
-    // More questions...
+    {
+      text: 'Why do we never see a hippopotamus hiding in a tree?',
+      choices: [
+        'Trees are not strong enough',
+        'Hippos cannot climb',
+        'Hippos are afraid of heights',
+        'Because they’re really good at it',
+      ],
+      answer: 'Because they’re really good at it',
+    },
+    {
+      text: 'Why do we tell actors to "break a leg"?',
+      choices: [
+        'To make them bend their knees',
+        'Because every play has a cast',
+        'It’s a reverse psychology',
+        'To scare them',
+      ],
+      answer: 'Because every play has a cast',
+    },
+    {
+      text: 'Why was the computer cold?',
+      choices: [
+        'It left its Windows open',
+        'It had too many fans',
+        'It was surfing the web too much',
+        'It didn’t have a warm keyboard',
+      ],
+      answer: 'It left its Windows open',
+    },
   ]
 
   useEffect(() => {
     setDirection('right')
   }, [currentQuestionIndex])
 
+  // inside MainComponent function
   const handleChoiceSelection = (selectedChoice) => {
     const { answer } = questions[currentQuestionIndex]
     if (selectedChoice === answer) {
-      alert('Correct answer!')
+      ToastAndroid.show('Correct answer!', ToastAndroid.SHORT)
       setScore(score + 1)
       setDirection('left')
       setTimeout(() => {
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1)
-      }, 500)
+        setTimeout(() => {
+          setDirection('right')
+        }, 1500)
+      }, 1000)
     } else {
-      alert('Incorrect answer! Try again')
+      ToastAndroid.show('Incorrect answer! Try again', ToastAndroid.SHORT)
     }
   }
 
@@ -90,6 +128,7 @@ export default function MainComponent() {
                           <Button
                             title={choice}
                             onPress={() => handleChoiceSelection(choice)}
+                            style={{ fontSize: 24 }}
                           />
                         </View>
                       )
@@ -131,6 +170,8 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     marginTop: 20,
+    paddingLeft: 30,
+    paddingRight: 30
   },
   endCard: {
     alignItems: 'center',
