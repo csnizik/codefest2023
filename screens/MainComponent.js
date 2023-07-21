@@ -106,6 +106,7 @@ export default function MainComponent() {
                 title={'Your location'}
               />
             </MapView>
+            {console.log(location)}
             {!gameStarted ? (
               <View style={styles.startView}>
                 <Text style={styles.title}>App Title</Text>
