@@ -3,6 +3,7 @@ import { Button, Text, View, StyleSheet } from "react-native";
 import { useState } from "react";
 import { getCityName } from "../api/GetCityName";
 import * as Location from "expo-location";
+import QuestionPage from "./QuestionPage";
 
 const StartPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,24 +21,21 @@ const StartPage = () => {
       coords: { latitude, longitude },
     } = await Location.getCurrentPositionAsync();
     const data = await getCityName({ latitude, longitude });
-
-    setLocation(data);
+    setLocation(data[0]);
     setIsLoading(false);
   };
 
   return (
     <View style={styles.container}>
-      {location && (
-        <>
-          <Text>{location.name}</Text>
-        </>
+      {location ? (
+        <QuestionPage cityName={location.name} />
+      ) : (
+        <Button
+          title={isLoading ? "Loading..." : "Press to Start"}
+          disabled={isLoading}
+          onPress={handleGameStart}
+        />
       )}
-      <Button
-        title="Press to Start"
-        loading={isLoading}
-        loadingIndicatorPosition="overlay"
-        onPress={handleGameStart}
-      />
       <StatusBar style="auto" />
     </View>
   );
