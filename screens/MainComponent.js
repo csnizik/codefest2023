@@ -65,7 +65,6 @@ export default function MainComponent() {
     setDirection('right')
   }, [currentQuestionIndex])
 
-  // inside MainComponent function
   const handleChoiceSelection = (selectedChoice) => {
     const { answer } = questions[currentQuestionIndex]
     if (selectedChoice === answer) {
