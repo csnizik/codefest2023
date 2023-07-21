@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Platform, Text, View, StyleSheet, ActivityIndicator } from 'react-native'
+import {
+  Platform,
+  Text,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native'
 import * as Location from 'expo-location'
 
 export default function LocationComponent({ onLocationSet }) {
@@ -33,6 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    height: '50%',
   },
   paragraph: {
     fontSize: 18,

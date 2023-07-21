@@ -1,20 +1,23 @@
+// SlideInCardComponent.js
 import React, { useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native'
+import { StyleSheet, Animated, Dimensions } from 'react-native'
 
 const { width, height } = Dimensions.get('window')
 
-const SlideInCardComponent = ({ position, direction, question, answer, title }) => {
+const SlideInCardComponent = ({ position, direction, children }) => {
   const slideAnim = useRef(
-    new Animated.Value(direction === 'right' ? width : -width)
+    new Animated.Value(
+      direction === 'right' ? width : direction === 'left' ? -width : 0
+    )
   ).current
 
   useEffect(() => {
     Animated.timing(slideAnim, {
-      toValue: 0,
+      toValue: direction === 'left' ? -width : 0,
       duration: 500,
       useNativeDriver: true,
     }).start()
-  }, [])
+  }, [direction])
 
   const cardPosition = {
     top: position === 'top' ? 0 : 'auto',
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
   card: {
     position: 'absolute',
     width: '100%',
-    height: height / 3,
+    height: height / 2,
     backgroundColor: 'white',
   },
 })
