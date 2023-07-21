@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import LocationComponent from '../components/LocationComponent'
+import SlideInCardComponent from '../components/SlideInCardComponent'
 
 export default function MainComponent() {
   const [location, setLocation] = useState(null)
@@ -13,6 +14,7 @@ export default function MainComponent() {
         <StatusBar hidden={true} />
         <LocationComponent onLocationSet={setLocation} />
         {location && (
+          <>
           <MapView
           style={styles.mapStyle}
           initialRegion={{
@@ -22,7 +24,6 @@ export default function MainComponent() {
               longitudeDelta: 0.0221,
             }}
             >
-            {console.log('loc', location.coords)}
             <Marker
               coordinate={{
                 latitude: location.coords.latitude,
@@ -31,6 +32,10 @@ export default function MainComponent() {
               title={'Your location'}
             />
           </MapView>
+          <SlideInCardComponent position="top" direction="right">
+            <Text>Testing slide in card</Text>
+          </SlideInCardComponent>
+          </>
         )}
       </View>
     </>
