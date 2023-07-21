@@ -32,8 +32,8 @@ export default function MainComponent() {
               title={'Your location'}
             />
           </MapView>
-          <SlideInCardComponent position="top" direction="right">
-            <Text>Testing slide in card</Text>
+          <SlideInCardComponent position="top" direction="right" style={styles.cardContainer}>
+            <Text style={styles.cardText}>Testing slide in card</Text>
           </SlideInCardComponent>
           </>
         )}
@@ -42,14 +42,13 @@ export default function MainComponent() {
   )
 }
 
-// Styles omitted for brevity
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
+    backgroundColor: '#fff',
   },
 
   button: {
@@ -71,4 +70,15 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
   },
+  cardContainer: {
+    padding: 0,
+    margin: 0,
+    marginBottom: 20,
+  },
+  cardText: {
+        marginTop: 10,
+        textAlign: 'center',
+        color: 'black',
+        fontSize: 35
+  }
 })

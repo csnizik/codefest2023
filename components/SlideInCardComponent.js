@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native'
 
 const { width, height } = Dimensions.get('window')
 
-const SlideInCardComponent = ({ position, direction, children }) => {
+const SlideInCardComponent = ({ position, direction, question, answer, title }) => {
   const slideAnim = useRef(
     new Animated.Value(direction === 'right' ? width : -width)
   ).current
