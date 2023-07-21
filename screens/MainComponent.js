@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, Button, ToastAndroid } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import LocationComponent from '../components/LocationComponent'
 import SlideInCardComponent from '../components/SlideInCardComponent'
+import { getCityName } from '../api/GetCityName'
 
 export default function MainComponent() {
   const [location, setLocation] = useState(null)
@@ -16,7 +17,7 @@ export default function MainComponent() {
   const questions = [
     {
       text: 'What is the answer to life, the universe, and everything?',
-      choices: ['24', '99', '42', '39'],
+      choices: ['24', '99', '42', '33'],
       answer: '42',
     },
     {
@@ -109,7 +110,7 @@ export default function MainComponent() {
             {console.log(location)}
             {!gameStarted ? (
               <View style={styles.startView}>
-                <Text style={styles.title}>App Title</Text>
+                <Text style={styles.title}>`${getCityName(coords.latitude, coords.longitude)} Quiz`</Text>
                 <Button
                   title="Start Game"
                   onPress={() => setGameStarted(true)}
