@@ -5,16 +5,22 @@ import { useState } from "react";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
+  const [location, setLocation] = useState(null);
 
-  const handleGameStart = () => {
+  const handleGameStart = async () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
+    const data = await Location.getCurrentPositionAsync();
+    setLocation(data);
+    setIsLoading(false);
   };
 
   return (
     <View style={styles.container}>
+      {location && (
+        <>
+          <p>location.latitude</p>
+        </>
+      )}
       <Button
         title="Press to Start"
         loading={isLoading}
