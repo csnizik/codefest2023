@@ -3,8 +3,8 @@ import { GetTriviaQuestions } from "../api/GetTriviaQustions";
 import { Button, Text, View, StyleSheet } from "react-native";
 
 const QuestionPage = ({ cityName }) => {
-  const [questions, setQuestions] = useState(null);
-  const [answers, setAnswers] = useState({});
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
     const asyncFunc = (cityName) => {
@@ -12,11 +12,18 @@ const QuestionPage = ({ cityName }) => {
     };
     const data = asyncFunc(cityName);
     setQuestions(data);
+    setAnswers(new Array(data.length).fill("n/a"));
   }, []);
 
   const handleClick = (questionChoice) => {
     if (questions[questionChoice[0]].answer === questionChoice[1]) {
+      const arr = [...answers];
+      arr[questionChoice[0]] = "Correct";
+      setAnswers([...arr]);
     } else {
+      const arr = [...answers];
+      arr[questionChoice[0]] = "Incorrect";
+      setAnswers([...arr]);
     }
   };
 
@@ -25,12 +32,13 @@ const QuestionPage = ({ cityName }) => {
       {questions &&
         questions.map((question, qIdx) => {
           return (
-            <>
+            <View key={`q${qIdx}`}>
+              {answers[qIdx] !== "n/a" && <Text>{answers[qIdx]}</Text>}
               <Text>{question.text}</Text>
 
               {question.choices.map((choice, cIdx) => {
                 return (
-                  <>
+                  <View key={`c${cIdx}`}>
                     <Button
                       style={styles.button}
                       title={choice}
@@ -38,10 +46,10 @@ const QuestionPage = ({ cityName }) => {
                         handleClick([qIdx, cIdx]);
                       }}
                     />
-                  </>
+                  </View>
                 );
               })}
-            </>
+            </View>
           );
         })}
     </View>
