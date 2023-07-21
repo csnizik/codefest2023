@@ -1,75 +1,43 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState } from 'react'
-import { Alert, StyleSheet, View, Button } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
-import * as Location from 'expo-location'
-import { API_KEY } from '@env'
-import TextInput from '../components/TextInput'
+import LocationComponent from '../components/LocationComponent'
 
-export default function App() {
-  const [initialLocation, setInitialLocation] = useState(null)
-  const [location, setLocation] = useState('')
-  const [searchedLocation, setSearchedLocation] = useState(null)
-  const [marker, setMarker] = useState(null)
-
-  const key = API_KEY
-
-  // Getting location when opened
-  useEffect(() => {
-    ;(async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        Alert.alert('No permission to get location')
-        return
-      }
-      const firstLocation = await Location.getCurrentPositionAsync({})
-      const firstLat = firstLocation.coords.latitude
-      const firstLng = firstLocation.coords.longitude
-      setInitialLocation({
-        latitude: firstLat,
-        longitude: firstLng,
-        latitudeDelta: 0.0322,
-        longitudeDelta: 0.0221,
-      })
-      setMarker({ latitude: firstLat, longitude: firstLng })
-    })()
-  }, [])
-
-  // Getting location from API when Search Button pressed
-  const getLocation = async () => {
-    try {
-      const response = await fetch(
-        `https://www.mapquestapi.com/geocoding/v1/address?key=${key}&location=${location}`
-      )
-      const data = await response.json()
-      const lat = data.results[0].locations[0].latLng.lat
-      const lng = data.results[0].locations[0].latLng.lng
-      setSearchedLocation({
-        latitude: lat,
-        longitude: lng,
-        latitudeDelta: 0.0322,
-        longitudeDelta: 0.0221,
-      })
-      setMarker({ latitude: lat, longitude: lng })
-    } catch (error) {
-      Alert.alert('Error', error)
-    }
-  }
+export default function MainComponent() {
+  const [location, setLocation] = useState(null)
 
   return (
-    <View style={styles.container}>
-      <StatusBar hidden={true} />
-
-      <MapView
-        style={styles.mapStyle}
-        initialRegion={initialLocation}
-        region={searchedLocation}
-      >
-        {marker && <Marker coordinate={marker} title={location} />}
-      </MapView>
-    </View>
+    <>
+      <View style={styles.container}>
+        <StatusBar hidden={true} />
+        <LocationComponent onLocationSet={setLocation} />
+        {location && (
+          <MapView
+          style={styles.mapStyle}
+          initialRegion={{
+            latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.0322,
+              longitudeDelta: 0.0221,
+            }}
+            >
+            {console.log('loc', location.coords)}
+            <Marker
+              coordinate={{
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }}
+              title={'Your location'}
+            />
+          </MapView>
+        )}
+      </View>
+    </>
   )
 }
+
+// Styles omitted for brevity
 
 const styles = StyleSheet.create({
   container: {
